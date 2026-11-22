@@ -40,14 +40,14 @@ Arayüz görselleri örnek içerik kullanır; gerçek cihaz adresi veya kişisel
 
 ## İndirme ve kurulum
 
-1. [Son sürüm sayfasından](https://github.com/maventra-dev/MiBoxKonsol/releases/latest) `MiBoxKonsol-Windows-x64.zip` dosyasını indirin.
+1. [Son sürüm sayfasından](https://github.com/maventra-dev/MiBoxKonsol/releases/latest) `MiBoxKonsol-<sürüm>-win64-onedir.zip` dosyasını indirin.
 2. ZIP dosyasının **tüm içeriğini** bir klasöre çıkarın.
 3. Klasördeki `MiBoxKonsol.exe` dosyasını çalıştırın. EXE'yi ZIP içinden açmayın veya tek başına başka klasöre taşımayın.
 4. TV'de **Geliştirici seçenekleri** ve **USB hata ayıklama** özelliğini açın. Bilgisayar ile TV aynı yerel ağdaysa uygulamadaki cihaz bulma veya kablosuz eşleştirme araçlarını kullanın.
 
 Taşınabilir Windows paketi ADB 37.0.1'i ve gerekli Windows dosyalarını içerir; ayrıca ADB kurmanız gerekmez. ADB'nin lisans ve atıf bildirimi `platform-tools/NOTICE.txt` içindedir.
 
-İndirmenin bütünlüğünü kontrol etmek için aynı release sayfasındaki `.sha256` dosyasını kullanabilirsiniz. USB ile bağlanacaksanız TV'yi USB hata ayıklama açıkken bilgisayara bağlayıp TV ekranındaki izin isteğini onaylayın.
+İndirmenin bütünlüğünü kontrol etmek için aynı release sayfasındaki `SHA256SUMS.txt` dosyasını kullanabilirsiniz (PowerShell: `Get-FileHash .\MiBoxKonsol-<sürüm>-win64-onedir.zip`). USB ile bağlanacaksanız TV'yi USB hata ayıklama açıkken bilgisayara bağlayıp TV ekranındaki izin isteğini onaylayın.
 
 ## Gereksinimler
 
@@ -106,7 +106,7 @@ MiBox Konsol is an open-source Windows desktop manager for **Xiaomi Mi Box**, **
 
 **Quick start**
 
-1. Download `MiBoxKonsol-Windows-x64.zip` from [GitHub Releases](https://github.com/maventra-dev/MiBoxKonsol/releases/latest).
+1. Download `MiBoxKonsol-<version>-win64-onedir.zip` (checksums in `SHA256SUMS.txt`) from [GitHub Releases](https://github.com/maventra-dev/MiBoxKonsol/releases/latest).
 2. Extract the **whole** archive and run `MiBoxKonsol.exe`. The ZIP bundles ADB 37.0.1 with its license notices, so no separate ADB install is required.
 3. On the TV, enable **Developer options** and **USB debugging**, then approve the connection prompt.
 

@@ -1,5 +1,11 @@
 # Değişiklik günlüğü
 
+## [Yayımlanmamış]
+
+- Katalog: Button Mapper'ın resmî APK adresi artık yok (HTTP 404); kayıt Play Store türüne çevrildi ve TV'de Play Store sayfası açılarak kurulur. Web sitesi `buttonmapper.com` olarak güncellendi.
+- Katalog: Aptoide TV yükleyici adresi otomatik indirmeleri reddediyordu (HTTP 403); Aptoide'nin resmî APK deposundaki doğrudan adres kullanılıyor.
+- README'deki indirme adları gerçek sürüm dosyalarıyla eşleşti: `MiBoxKonsol-<sürüm>-win64-onedir.zip` ve `SHA256SUMS.txt`.
+
 ## [1.5.2] - 2026-11-22
 
 - `mibox.py --help` (ayrıca `-h`, `/?`, `--yardim`) arayüzü açmadan komut satırı seçeneklerini listeler.
