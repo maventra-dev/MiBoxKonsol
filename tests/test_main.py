@@ -14,6 +14,8 @@ import os
 import sys
 import time
 
+import pytest
+
 from mibox_app import config, diagnostics
 from mibox_app import main as main_mod
 
@@ -924,3 +926,17 @@ def test_main_argv_yok(monkeypatch):
                         lambda output_path=None: yollar.append(output_path))
     assert main_mod.main() == 0
     assert yollar == [None]
+
+
+def test_main_help_gui_acmaz(monkeypatch, capsys):
+    monkeypatch.setattr(main_mod, 'run',
+                        lambda selftest=False: pytest.fail('GUI acilmamali'))
+    for flag in ('-h', '--help', '/?', '--yardim'):
+        assert main_mod.main(['prog', flag]) == 0
+        out = capsys.readouterr().out
+        assert '--version' in out and '--selftest' in out
+
+
+def test_main_help_stdout_yok(monkeypatch):
+    monkeypatch.setattr(sys, 'stdout', None)
+    assert main_mod.main(['prog', '--help']) == 0

@@ -1,5 +1,11 @@
 # Değişiklik günlüğü
 
+## [Yayımlanmamış]
+
+- `mibox.py --help` (ayrıca `-h`, `/?`, `--yardim`) arayüzü açmadan komut satırı seçeneklerini listeler.
+- 32 bit PyQt5 uyumluluk katmanı alt modülleri (`PySide6.QtCore` vb.) paket niteliği olarak da sunar; `import PySide6` sonrası nitelik erişimi ve pytest-qt artık çalışır. Tanılama raporu PyQt sürümü yerine gerçek Qt çalışma zamanı sürümünü gösterir.
+- `requirements.txt`, 64 bit Windows üzerindeki 32 bit Python için `requirements-x86.txt` kullanılması gerektiğini açıklar; README'ye 32 bit kurulum notu ve genişletilmiş İngilizce tanıtım eklendi.
+
 ## [1.5.1] - 2026-10-17
 
 - Kumandadan HTTP(S) bağlantısı gönderilirken `?`, `&`, `%` ve diğer URL sembolleri korunur; Android komut satırına güvenli tırnaklama uygulanır.

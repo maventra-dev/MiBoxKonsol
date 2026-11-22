@@ -360,6 +360,45 @@ def run(selftest=False):
     return app.exec()
 
 
+HELP_TEXT = """MiBox Konsol - Android TV / Mi Box ADB yönetim merkezi
+
+Kullanım: MiBoxKonsol.exe [seçenek]   (kaynaktan: python mibox.py [seçenek])
+
+Seçenekler:
+  (seçeneksiz)              Grafik arayüzü başlatır.
+  -h, --help, --yardim      Bu yardımı gösterir ve çıkar.
+  --version, --bilgi        Sürüm ve ortam bilgisini yazar, pencere açmaz.
+  --report-file <dosya>     --version ile birlikte: bilgiyi dosyaya da yazar.
+  --selftest                Pencereyi kurup kapatır, işaretçi dosyası yazar.
+  --check-catalog           Katalog adreslerini denetler (hata varsa 1 döner).
+  --update-hash <id>        Katalog kaydının güncel SHA-256 değerini yazdırır.
+
+Not: Windows paketi penceresiz derlendiği için çıktıyı görmek üzere
+yönlendirin, örn.  MiBoxKonsol.exe --help > yardim.txt
+"""
+
+
+def _print_help():
+    """Komut satiri yardimini yaz; GUI acmaz."""
+    stream = sys.stdout
+    if stream is None:
+        return 0
+    try:
+        stream.reconfigure(encoding='utf-8', errors='backslashreplace')
+    except (AttributeError, OSError, ValueError):
+        pass
+    try:
+        stream.write(HELP_TEXT)
+        stream.flush()
+    except UnicodeEncodeError:
+        encoding = getattr(stream, 'encoding', None) or 'ascii'
+        stream.write(HELP_TEXT.encode(encoding, errors='backslashreplace')
+                     .decode(encoding, errors='replace'))
+    except OSError:
+        pass
+    return 0
+
+
 def main(argv=None):
     """CLI dagitimi (hem mibox.py hem .exe ayni yolu kullanir).
 
@@ -370,6 +409,8 @@ def main(argv=None):
     (baska)             : normal GUI.
     """
     argv = list(sys.argv if argv is None else argv)
+    if any(arg in ('-h', '--help', '/?', '--yardim') for arg in argv[1:]):
+        return _print_help()
     if '--check-catalog' in argv or '--update-hash' in argv:
         from .catalog_health import main as check_catalog
         return check_catalog(argv)

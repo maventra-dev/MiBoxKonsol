@@ -80,6 +80,14 @@ def _setup_pyqt5_shim():
             DontConfirmOverwrite = getattr(qtw.QFileDialog, 'DontConfirmOverwrite', 0)
         qtw.QFileDialog.Option = _OptionHelper
 
+    # `import PySide6; PySide6.QtCore` ve pytest-qt gibi araclarin alt modulu
+    # nitelik olarak bulabilmesi icin paket nitelikleri de baglanir.
+    pyside6.QtCore = core
+    pyside6.QtGui = gui
+    pyside6.QtWidgets = widgets
+    # Qt calisma zamani surumu (PySide6'daki QtCore.__version__ karsiligi).
+    core.__version__ = getattr(qtc, 'QT_VERSION_STR', '5.x')
+
     sys.modules['PySide6'] = pyside6
     sys.modules['PySide6.QtCore'] = core
     sys.modules['PySide6.QtGui'] = gui

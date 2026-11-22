@@ -13,7 +13,7 @@ authors = [
 license = { text = "MIT" }
 classifiers = [
     "Development Status :: 5 - Production/Stable",
-    "Environment :: X11 Applications :: Qt",
+    "Environment :: Win32 (MS Windows)",
     "Intended Audience :: End Users/Desktop",
     "License :: OSI Approved :: MIT License",
     "Operating System :: Microsoft :: Windows",
@@ -26,7 +26,11 @@ classifiers = [
     "Topic :: System :: Systems Administration",
     "Topic :: Utilities",
 ]
-keywords = ["mibox", "android-tv", "adb", "debloat", "remote", "pyside6", "pyqt5"]
+keywords = [
+    "mibox", "mi-box", "mi-tv-stick", "xiaomi", "android-tv", "google-tv",
+    "adb", "adb-gui", "debloat", "remote", "apk-installer", "scrcpy",
+    "windows", "pyside6", "pyqt5",
+]
 requires-python = ">=3.10"
 dependencies = [
     "PySide6>=6.6; platform_machine != 'x86' and platform_machine != 'i386' and platform_machine != 'i686'",
@@ -48,6 +52,8 @@ mibox = "mibox_app.main:main"
 Homepage = "https://github.com/maventra-dev/MiBoxKonsol"
 Issues = "https://github.com/maventra-dev/MiBoxKonsol/issues"
 Documentation = "https://github.com/maventra-dev/MiBoxKonsol#readme"
+Changelog = "https://github.com/maventra-dev/MiBoxKonsol/blob/master/CHANGELOG.md"
+Releases = "https://github.com/maventra-dev/MiBoxKonsol/releases"
 
 [tool.setuptools.packages.find]
 include = ["mibox_app*"]

@@ -108,12 +108,29 @@ def test_setup_pyqt5_shim_esleme(monkeypatch):
     assert gui.QAction == 'QAction-nesnesi'
     assert gui.QShortcut == 'QShortcut-nesnesi'
     assert widgets.QMessageBox is _SahteQMessageBox
+    # Alt moduller paket niteligi olarak da erisilebilir olmali
+    # (`import PySide6; PySide6.QtCore`, pytest-qt bunu kullanir).
+    assert pyside6.QtCore is core
+    assert pyside6.QtGui is gui
+    assert pyside6.QtWidgets is widgets
+    assert core.__version__ == '5.x'
 
-    std = qtw.QMessageBox.StandardButton
+    std =qtw.QMessageBox.StandardButton
     assert std.Yes == 1
     assert std.Save == 256
     assert not hasattr(std, 'Discard')
     assert qtw.QFileDialog.Option.DontConfirmOverwrite == 16
+
+
+def test_init_qt_pyqt5_qt_surumunu_raporlar(monkeypatch):
+    monkeypatch.setattr(qt_compat, 'QT_API', qt_compat.QT_API)
+    monkeypatch.setattr(qt_compat, 'QT_VERSION', qt_compat.QT_VERSION)
+    qtc, qtg, qtw = _sahte_pyqt5()
+    qtc.QT_VERSION_STR = '5.15.2'
+    _pyqt5_enjekte(monkeypatch, qtc, qtg, qtw, pyside6_yok=True)
+
+    assert qt_compat.init_qt() is True
+    assert qt_compat.QT_VERSION == '5.15.2'
 
 
 def test_setup_pyqt5_shim_pyqt5_yoksa(monkeypatch):
