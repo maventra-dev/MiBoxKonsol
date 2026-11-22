@@ -1,0 +1,49 @@
+name: Güvenlik iletişimi (Security contact)
+description: Bir güvenlik açığı için ayrıntı paylaşmadan özel iletişim isteyin
+title: "[GÜVENLİK] İletişim talebi"
+labels: ["security"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Issue'lar herkese açıktır.** Açığın ayrıntılarını, yeniden oluşturma adımlarını veya örnek kodu bu forma yazmayın.
+        Yönetici bu talebe, ayrıntıları özel olarak paylaşabileceğiniz bir kanalla yanıt verir. Süreç için [SECURITY.md](https://github.com/maventra-dev/MiBoxKonsol/blob/master/SECURITY.md) dosyasına bakın.
+  - type: input
+    id: version
+    attributes:
+      label: Etkilenen MiBox Konsol sürümü
+      placeholder: "1.5.3"
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Genel alan
+      description: Yalnızca kategori seçin; ayrıntı vermeyin.
+      options:
+        - Komut onayı ve güvenlik kapısı
+        - ADB bağlantısı ve eşleştirme
+        - Dosya aktarımı
+        - APK kurulumu ve katalog indirmeleri
+        - Güncelleme ve paketleme
+        - Diğer
+    validations:
+      required: true
+  - type: dropdown
+    id: impact
+    attributes:
+      label: Tahmini etki
+      options:
+        - Düşük
+        - Orta
+        - Yüksek
+        - Bilmiyorum
+    validations:
+      required: true
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Onay
+      options:
+        - label: Bu forma açığın ayrıntılarını, adımlarını veya kişisel bilgi yazmadım.
+          required: true

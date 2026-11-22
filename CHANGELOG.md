@@ -3,8 +3,8 @@
 ## [Yayımlanmadı]
 
 - Hata ve öneri bildirimleri zorunlu alanlı GitHub formlarına taşındı; hata formu sürüm, cihaz, işletim sistemi ve bağlantı türünü sorar ve kişisel bilgi uyarısı içerir.
-- `SECURITY.md` desteklenen sürüm olarak 1.5.x serisini gösterir; davranış kuralları (`CODE_OF_CONDUCT.md`) eklendi.
-- `CONTRIBUTING.md` test ve ruff denetimi adımlarını anlatır; GitHub Actions ve pip bağımlılıkları için aylık Dependabot denetimi açıldı.
+- `SECURITY.md` desteklenen sürüm olarak 1.5.x serisini gösterir. Güvenlik açıkları için ayrıntı istemeyen "Güvenlik iletişimi" formu eklendi; ayrıntılar yöneticinin bildirdiği özel kanaldan paylaşılır. Davranış kuralları (`CODE_OF_CONDUCT.md`) eklendi.
+- `CONTRIBUTING.md` test ve ruff denetimi adımlarını anlatır; GitHub Actions ve pip bağımlılıkları için aylık Dependabot denetimi açıldı; ilk güncellemeyle `actions/setup-python` 7.1.0 sürümüne yükseltildi.
 
 ## [1.5.3] - 2026-11-22
 

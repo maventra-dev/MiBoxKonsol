@@ -20,4 +20,4 @@ MiBox Konsol topluluğu; deneyimi, kimliği veya geçmişi ne olursa olsun herke
 
 Kurallara aykırı davranışlar proje yöneticileri tarafından incelenir. Yöneticiler uygunsuz yorumları, commit'leri, issue'ları ve diğer katkıları düzenleme, kaldırma veya reddetme ve gerekirse ilgili kişiyi projeden geçici ya da kalıcı olarak uzaklaştırma hakkına sahiptir.
 
-Bir ihlali bildirmek için depodaki **Security → Report a vulnerability** formunu gizli bildirim kanalı olarak kullanabilirsiniz. Tüm bildirimler gizli tutulur.
+Bir ihlali bildirmek için ilgili içeriğin bağlantısını vererek bir issue açın. Bildirim herkese açık paylaşılmaması gereken bilgi içeriyorsa, ayrıntı yazmadan [güvenlik iletişimi formuyla](https://github.com/maventra-dev/MiBoxKonsol/issues/new?template=security_contact.yml) özel iletişim isteyin. Yöneticiler bildirimleri adil ve tarafsız biçimde inceler.

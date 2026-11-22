@@ -15,8 +15,10 @@ Güvenlik düzeltmeleri yalnızca en güncel sürüm serisine yayımlanır. Eski
 
 Bu yazılımda bir güvenlik açığı tespit ederseniz:
 
-- Lütfen bunu herkese açık bir GitHub Issue olarak **bildirmeyin**.
-- Depodaki **Security → Report a vulnerability** bağlantısını ([doğrudan form](https://github.com/maventra-dev/MiBoxKonsol/security/advisories/new)) kullanarak gizli bildirim gönderin.
-- Bildiriminize etkilenen sürümü, yeniden oluşturma adımlarını ve olası etkiyi ekleyin. Cihaz IP adresi, hesap bilgisi veya kişisel dosya yolu paylaşmayın.
+1. Açığın ayrıntılarını herkese açık bir GitHub Issue'ya **yazmayın**.
+2. [Güvenlik iletişimi formuyla](https://github.com/maventra-dev/MiBoxKonsol/issues/new?template=security_contact.yml) yalnızca etkilenen sürümü, genel alanı ve tahmini etkiyi belirten kısa bir talep açın.
+3. Yönetici bu talebe, ayrıntıları özel olarak paylaşabileceğiniz bir kanalla yanıt verir. Yeniden oluşturma adımlarını ve olası etkiyi yalnızca o kanaldan gönderin. Cihaz IP adresi, hesap bilgisi veya kişisel dosya yolu paylaşmayın.
 
-Bildirilen açıklar en kısa sürede incelenir; doğrulanan sorunlar için düzeltme sürümü yayımlanır ve CHANGELOG'da belirtilir.
+Kötüye kullanılamayan düşük etkili sorunlar (ör. yanlış uyarı metni) normal [hata formuyla](https://github.com/maventra-dev/MiBoxKonsol/issues/new?template=bug_report.yml) bildirilebilir.
+
+Bildirilen açıklar en kısa sürede incelenir; doğrulanan sorunlar için düzeltme sürümü yayımlanır ve CHANGELOG'da belirtilir. Ayrıntılar ancak düzeltme yayımlandıktan sonra herkese açık paylaşılır.

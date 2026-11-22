@@ -69,7 +69,7 @@ python -m pytest
 ## 🐞 Hata Bildirimi ve Öneriler
 
 - Hata ve önerileri [issue formları](https://github.com/maventra-dev/MiBoxKonsol/issues/new/choose) ile açın.
-- Güvenlik açıklarını herkese açık issue yerine [SECURITY.md](SECURITY.md) içindeki gizli kanaldan bildirin.
+- Güvenlik açıklarının ayrıntılarını herkese açık issue'ya yazmayın; [SECURITY.md](SECURITY.md) içindeki adımlarla özel iletişim isteyin.
 - Topluluk etkileşimlerinde [Davranış Kuralları](CODE_OF_CONDUCT.md) geçerlidir.
 
 ---
