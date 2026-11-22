@@ -1,6 +1,6 @@
 # Değişiklik günlüğü
 
-## [Yayımlanmamış]
+## [1.5.3] - 2026-11-22
 
 - Katalog: Button Mapper'ın resmî APK adresi artık yok (HTTP 404); kayıt Play Store türüne çevrildi ve TV'de Play Store sayfası açılarak kurulur. Web sitesi `buttonmapper.com` olarak güncellendi.
 - Katalog: Aptoide TV yükleyici adresi otomatik indirmeleri reddediyordu (HTTP 403); Aptoide'nin resmî APK deposundaki doğrudan adres kullanılıyor.
