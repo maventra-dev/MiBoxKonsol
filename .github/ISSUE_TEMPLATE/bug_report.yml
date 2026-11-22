@@ -1,0 +1,74 @@
+name: Hata Bildirimi (Bug Report)
+description: Karşılaştığınız bir sorunu veya hatayı bildirin
+title: "[HATA] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Bildirimden önce [son sürümü](https://github.com/maventra-dev/MiBoxKonsol/releases/latest) kullandığınızdan emin olun.
+        Paylaşmadan önce cihaz IP adreslerini, kullanıcı adlarını, dosya yollarını, hesap bilgilerini ve kişisel metinleri silin.
+  - type: input
+    id: version
+    attributes:
+      label: MiBox Konsol sürümü
+      description: Ayarlar sekmesinden veya `MiBoxKonsol.exe --version` / `python mibox.py --version` ile öğrenebilirsiniz.
+      placeholder: "1.5.3"
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: Cihaz modeli ve Android sürümü
+      placeholder: "Xiaomi Mi Box S 4K, Android 9"
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: İşletim sistemi
+      options:
+        - Windows 11 (64 bit)
+        - Windows 10 (64 bit)
+        - Windows 10 (32 bit)
+        - Diğer
+    validations:
+      required: true
+  - type: dropdown
+    id: connection
+    attributes:
+      label: Bağlantı türü
+      options:
+        - USB
+        - Kablosuz (Wi-Fi / eşleştirme)
+        - Bilmiyorum
+  - type: textarea
+    id: description
+    attributes:
+      label: Sorunun açıklaması
+      description: Ne oldu? Net ve kısa anlatın.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Yeniden oluşturma adımları
+      placeholder: |
+        1. '...' sekmesine gidin
+        2. '...' düğmesine tıklayın
+        3. Şu hatayı görün: '...'
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Beklenen davranış
+      description: Ne olmasını bekliyordunuz?
+  - type: textarea
+    id: logs
+    attributes:
+      label: Ekran görüntüsü veya ilgili log satırları
+      description: |
+        Yalnızca ilgili kısa bir bölüm ekleyin. Ham `logs/` klasörünü eklemeyin; günlükler cihaz adresi ve yerel dosya yolları içerebilir.
+        **Ayarlar → Paylaşım özeti** kişisel bilgi içermeyen bir özet üretir.
+      render: text

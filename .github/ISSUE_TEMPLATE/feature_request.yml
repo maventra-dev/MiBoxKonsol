@@ -1,0 +1,29 @@
+name: Özellik İsteği (Feature Request)
+description: MiBox Konsol için yeni bir fikir veya geliştirme önerin
+title: "[ÖNERİ] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Önerilen özelliğin özeti
+      description: Eklenmesini veya geliştirilmesini istediğiniz özelliği açıklayın.
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Hangi sorunu çözer?
+      description: Bu özellik hangi kullanım senaryosunu kolaylaştırır?
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatif çözümler
+      description: Düşündüğünüz başka bir yöntem veya arayüz tasarımı var mı?
+  - type: textarea
+    id: extra
+    attributes:
+      label: Ek bilgi veya görsel
+      description: Varsa taslak çizim veya ek açıklamalar.

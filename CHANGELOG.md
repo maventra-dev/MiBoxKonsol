@@ -1,5 +1,11 @@
 # Değişiklik günlüğü
 
+## [Yayımlanmadı]
+
+- Hata ve öneri bildirimleri zorunlu alanlı GitHub formlarına taşındı; hata formu sürüm, cihaz, işletim sistemi ve bağlantı türünü sorar ve kişisel bilgi uyarısı içerir.
+- `SECURITY.md` desteklenen sürüm olarak 1.5.x serisini gösterir; davranış kuralları (`CODE_OF_CONDUCT.md`) eklendi.
+- `CONTRIBUTING.md` test ve ruff denetimi adımlarını anlatır; GitHub Actions ve pip bağımlılıkları için aylık Dependabot denetimi açıldı.
+
 ## [1.5.3] - 2026-11-22
 
 - Katalog: Button Mapper'ın resmî APK adresi artık yok (HTTP 404); kayıt Play Store türüne çevrildi ve TV'de Play Store sayfası açılarak kurulur. Web sitesi `buttonmapper.com` olarak güncellendi.

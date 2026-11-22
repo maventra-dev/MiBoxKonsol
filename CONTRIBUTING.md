@@ -47,6 +47,33 @@ python mibox.py --selftest
 
 ---
 
+## ✅ Testler ve Kod Denetimi
+
+Geliştirme araçlarını (pytest, pytest-qt, ruff, PyInstaller) yükleyin:
+```cmd
+pip install -r requirements-dev.txt
+```
+
+Pull request açmadan önce iki denetimin de temiz geçtiğinden emin olun; CI aynı adımları Python 3.10–3.14 üzerinde çalıştırır:
+```cmd
+python -m ruff check .
+python -m pytest
+```
+
+- Arayüz testleri ekransız çalışır; gerekirse `set QT_QPA_PLATFORM=offscreen` kullanın.
+- Davranış değiştiren her düzeltmeye, hatayı yeniden üreten bir test ekleyin.
+- Kullanıcıya görünen değişiklikleri `CHANGELOG.md` dosyasına Türkçe olarak yazın.
+
+---
+
+## 🐞 Hata Bildirimi ve Öneriler
+
+- Hata ve önerileri [issue formları](https://github.com/maventra-dev/MiBoxKonsol/issues/new/choose) ile açın.
+- Güvenlik açıklarını herkese açık issue yerine [SECURITY.md](SECURITY.md) içindeki gizli kanaldan bildirin.
+- Topluluk etkileşimlerinde [Davranış Kuralları](CODE_OF_CONDUCT.md) geçerlidir.
+
+---
+
 ## 🏗️ EXE Derleme
 
 - **64-bit Standalone EXE:** `build_exe.bat`
