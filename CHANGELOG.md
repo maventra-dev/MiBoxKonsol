@@ -1,6 +1,6 @@
 # Değişiklik günlüğü
 
-## [Yayımlanmamış]
+## [1.5.2] - 2026-11-22
 
 - `mibox.py --help` (ayrıca `-h`, `/?`, `--yardim`) arayüzü açmadan komut satırı seçeneklerini listeler.
 - 32 bit PyQt5 uyumluluk katmanı alt modülleri (`PySide6.QtCore` vb.) paket niteliği olarak da sunar; `import PySide6` sonrası nitelik erişimi ve pytest-qt artık çalışır. Tanılama raporu PyQt sürümü yerine gerçek Qt çalışma zamanı sürümünü gösterir.
