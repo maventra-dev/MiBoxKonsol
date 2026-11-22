@@ -86,7 +86,7 @@ python -m pip install -r requirements-x86.txt
 
 ## Katkı ve lisans
 
-Hata bildirmek veya geliştirme önermek için [GitHub Issues](https://github.com/maventra-dev/MiBoxKonsol/issues) sayfasını kullanın. Katkı göndermeden önce [CONTRIBUTING.md](CONTRIBUTING.md) dosyasını inceleyin.
+Hata bildirmek veya geliştirme önermek için [GitHub Issues](https://github.com/maventra-dev/MiBoxKonsol/issues) sayfasını kullanın. Katkı göndermeden önce [CONTRIBUTING.md](CONTRIBUTING.md) dosyasını inceleyin. Güvenlik açıklarını [SECURITY.md](SECURITY.md) içindeki adımlarla bildirin; topluluk etkileşimlerinde [Davranış Kuralları](CODE_OF_CONDUCT.md) geçerlidir.
 
 MiBox Konsol, [MIT Lisansı](LICENSE) ile yayımlanır.
 
@@ -114,6 +114,6 @@ MiBox Konsol is an open-source Windows desktop manager for **Xiaomi Mi Box**, **
 
 **Privacy:** no telemetry or ads. Settings, logs, backups and screenshots stay on your computer; logs mask device addresses, IPs and local paths.
 
-The UI is in Turkish. Bug reports and contributions are welcome via [GitHub Issues](https://github.com/maventra-dev/MiBoxKonsol/issues). Licensed under MIT.
+The UI is in Turkish. Bug reports and contributions are welcome via [GitHub Issues](https://github.com/maventra-dev/MiBoxKonsol/issues); see [SECURITY.md](SECURITY.md) for reporting vulnerabilities and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) for community guidelines. Licensed under MIT.
 
 </details>

@@ -1407,16 +1407,16 @@ def test_surukle_birak(dosya, monkeypatch, tmp_path):
     veri_uzak.setUrls([uzak])
     veri_bos = QMimeData()
 
-    giris = QDragEnterEvent(QPoint(5, 5), Qt.CopyAction, veri_yerel,
+    giris = QDragEnterEvent(QPointF(5, 5), Qt.CopyAction, veri_yerel,
                             Qt.LeftButton, Qt.NoModifier)
     assert tab.eventFilter(grid, giris) is True
     assert giris.isAccepted() is True
 
-    giris2 = QDragEnterEvent(QPoint(5, 5), Qt.CopyAction, veri_bos,
+    giris2 = QDragEnterEvent(QPointF(5, 5), Qt.CopyAction, veri_bos,
                              Qt.LeftButton, Qt.NoModifier)
     assert tab.eventFilter(grid.viewport(), giris2) is False
 
-    giris3 = QDragEnterEvent(QPoint(5, 5), Qt.CopyAction, veri_uzak,
+    giris3 = QDragEnterEvent(QPointF(5, 5), Qt.CopyAction, veri_uzak,
                              Qt.LeftButton, Qt.NoModifier)
     assert tab.eventFilter(gozcu, giris3) is False
 
@@ -1435,12 +1435,12 @@ def test_surukle_birak(dosya, monkeypatch, tmp_path):
                         Qt.LeftButton, Qt.NoModifier)
     assert tab.eventFilter(grid, birak2) is False
 
-    giris4 = QDragEnterEvent(QPoint(5, 5), Qt.CopyAction, veri_yerel,
+    giris4 = QDragEnterEvent(QPointF(5, 5), Qt.CopyAction, veri_yerel,
                              Qt.LeftButton, Qt.NoModifier)
     tab.dragEnterEvent(giris4)
     assert giris4.isAccepted() is True
 
-    giris5 = QDragEnterEvent(QPoint(5, 5), Qt.CopyAction, veri_bos,
+    giris5 = QDragEnterEvent(QPointF(5, 5), Qt.CopyAction, veri_bos,
                              Qt.LeftButton, Qt.NoModifier)
     tab.dragEnterEvent(giris5)
     assert giris5.isAccepted() is False
