@@ -1,4 +1,4 @@
-__version__ = '1.5.3'
+__version__ = '1.5.4'
 APP_NAME = 'MiBox Konsol'
 
 # qt_compat, Qt modulleri yuklenmeden ONCE ortam ayari yapar; import

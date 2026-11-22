@@ -1,6 +1,6 @@
 # Değişiklik günlüğü
 
-## [Yayımlanmadı]
+## [1.5.4] - 2026-11-22
 
 - Hata ve öneri bildirimleri zorunlu alanlı GitHub formlarına taşındı; hata formu sürüm, cihaz, işletim sistemi ve bağlantı türünü sorar ve kişisel bilgi uyarısı içerir.
 - `SECURITY.md` desteklenen sürüm olarak 1.5.x serisini gösterir. Güvenlik açıkları için ayrıntı istemeyen "Güvenlik iletişimi" formu eklendi; ayrıntılar yöneticinin bildirdiği özel kanaldan paylaşılır. Davranış kuralları (`CODE_OF_CONDUCT.md`) eklendi.
