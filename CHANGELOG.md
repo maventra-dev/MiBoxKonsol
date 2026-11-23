@@ -1,6 +1,6 @@
 # Değişiklik günlüğü
 
-## [Yayımlanmadı]
+## [1.5.6] - 2026-11-23
 
 - `df /data` boş çıktı döndürdüğünde cihaz bilgisi ekranı `IndexError` ile kesilmez; depolama alanı `?` olarak gösterilir.
 
