@@ -3209,11 +3209,11 @@ class AdbEngine:
         """Genis cihaz bilgisi: depolama, pil, wifi, uptime, ekran."""
         info = self.device_info(target)
         try:
-            df = self.shell(target, 'df', '/data', timeout=timeout).output
+            df = self.shell(target, 'df', '/data', timeout=timeout).output or ''
             # son satirdaki kullanim % ve bos alan
             lines = [ln for ln in df.splitlines() if '/data' in ln]
             info['disk_data'] = lines[-1].strip() if lines else df.strip().splitlines()[-1]
-        except AdbError:
+        except (AdbError, IndexError):
             info['disk_data'] = '?'
         try:
             batt = self.shell(target, 'dumpsys', 'battery', timeout=timeout).output

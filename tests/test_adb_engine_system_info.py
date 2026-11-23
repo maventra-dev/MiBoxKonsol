@@ -867,3 +867,28 @@ def test_cpu_info_cpuinfo_tek_kez_okunur():
     out = eng.cpu_info('S')
     assert out['soc'] == 'Amlogic S905X'
     assert eng.calls.count(['cat', '/proc/cpuinfo']) == 1
+
+
+def test_device_info_full_bos_df_ciktisi():
+    """df basarili ama bos donerse alan '?' olmali; is IndexError vermemeli."""
+    def handler(call):
+        if call[:2] == ['df', '/data']:
+            return AdbResult(0, '', '')
+        if call[:2] == ['dumpsys', 'battery']:
+            return AdbResult(0, '', '')
+        if call[:1] == ['uptime']:
+            return AdbResult(0, '', '')
+        if call[:2] == ['dumpsys', 'wifi']:
+            return AdbResult(0, '', '')
+        if call[:2] == ['ip', 'route']:
+            return AdbResult(0, '', '')
+        if call[:2] == ['wm', 'size']:
+            return AdbResult(0, '', '')
+        return None
+
+    eng = InfoEngine(handler)
+    info = eng.device_info_full('S')
+    assert info['disk_data'] == '?'
+    assert info['battery'] == '?'
+    assert info['wifi_ip'] == '?'
+    assert info['screen'] == '?'

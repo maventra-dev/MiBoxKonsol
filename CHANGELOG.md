@@ -1,5 +1,9 @@
 # Değişiklik günlüğü
 
+## [Yayımlanmadı]
+
+- `df /data` boş çıktı döndürdüğünde cihaz bilgisi ekranı `IndexError` ile kesilmez; depolama alanı `?` olarak gösterilir.
+
 ## [1.5.5] - 2026-11-23
 
 - Sağlık özeti disk alanını `df -k` ile 1K blokları üzerinden okur; insan-okur (`5.0G`) veya blok sayımı sütunları KB sanılmaz, `df` hata satırları ölçüm olarak gösterilmez; başarılı çıktıdaki uyarılar ölçümü gizlemez.
