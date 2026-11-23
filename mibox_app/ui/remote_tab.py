@@ -41,7 +41,12 @@ from ..adb_engine import (
     sanitize_input_text,
 )
 from ..config import BASE_DIR
-from ..scrcpy_manager import ScrcpyDownloader, find_scrcpy, launch_scrcpy
+from ..scrcpy_manager import (
+    ScrcpyDownloader,
+    find_scrcpy,
+    launch_scrcpy,
+    scrcpy_profile_args,
+)
 from ..workers import CancelledError, Worker
 from . import kit
 from .icons import line_icon
@@ -765,13 +770,13 @@ class RemoteTab(QWidget):
         self.btn_live_stream.toggled.connect(self._toggle_live_stream)
         self.btn_live_stream.setToolTip('TV ekranını belirli aralıklarla otomatik yenileyerek gösterir.')
 
-        self.btn_scrcpy = QPushButton('🚀 Scrcpy (60 FPS)')
+        self.btn_scrcpy = QPushButton('🚀 Scrcpy')
         self.btn_scrcpy.setFixedHeight(28)
         self.btn_scrcpy.setProperty('accent', True)
         self.btn_scrcpy.clicked.connect(self._launch_scrcpy)
         self.btn_scrcpy.setContextMenuPolicy(Qt.CustomContextMenu)
         self.btn_scrcpy.customContextMenuRequested.connect(self._scrcpy_context_menu)
-        self.btn_scrcpy.setToolTip('Ultra akıcı 60 FPS canlı TV ekranı açar (Kurulu değilse otomatik onay ile indirir).\nSağ tık: Gelişmiş modlar ve yeniden indirme.')
+        self.btn_scrcpy.setToolTip('Akıcı canlı TV ekranı açar: 720p, 30 FPS, sessiz (Kurulu değilse otomatik onay ile indirir).\nSağ tık: Zayıf Wi-Fi ve yüksek kalite modları, yeniden indirme.')
 
         stream_row1.addWidget(self.btn_live_stream, 1)
         stream_row1.addWidget(self.btn_scrcpy, 1)
@@ -1190,23 +1195,23 @@ class RemoteTab(QWidget):
     def _scrcpy_context_menu(self, pos):
         context = self._capture_device_context()
         menu = QMenu(self)
-        a_run = menu.addAction('🚀 Scrcpy Başlat (Varsayılan - 60 FPS)')
-        a_low = menu.addAction('📶 Wi-Fi Hızlı Mod (4 Mbps, düşük gecikme)')
-        a_mute = menu.addAction('🔇 Yalnızca Görüntü (Sessiz / --no-audio)')
+        a_run = menu.addAction('🚀 Akıcı Mod (Varsayılan - 720p, 30 FPS, sessiz)')
+        a_low = menu.addAction('📶 Zayıf Wi-Fi Modu (1024p, 2 Mbps, sessiz)')
+        a_quality = menu.addAction('🎞️ Yüksek Kalite (tam çözünürlük, 60 FPS, sesli)')
         menu.addSeparator()
         a_reinstall = menu.addAction('🔄 Scrcpy\'yi Yeniden İndir / Güncelle')
         a_open_folder = menu.addAction('📁 Scrcpy Klasörünü Aç')
 
         act = menu.exec(self.btn_scrcpy.mapToGlobal(pos))
-        if context is None and act in (a_run, a_low, a_mute, a_reinstall):
+        if context is None and act in (a_run, a_low, a_quality, a_reinstall):
             self.lbl_status.setText('Menü açılırken bağlantı hazır değildi. Bağlandıktan sonra yeniden deneyin.')
             return
         if act == a_run:
             self._launch_scrcpy(context=context)
         elif act == a_low:
-            self._launch_scrcpy(extra_args=['--video-bit-rate=4M', '--max-size=1280'], context=context)
-        elif act == a_mute:
-            self._launch_scrcpy(extra_args=['--no-audio'], context=context)
+            self._launch_scrcpy(extra_args=scrcpy_profile_args('weak_wifi'), context=context)
+        elif act == a_quality:
+            self._launch_scrcpy(extra_args=scrcpy_profile_args('quality'), context=context)
         elif act == a_reinstall:
             self._download_and_launch_scrcpy(force_download=True, context=context)
         elif act == a_open_folder:
@@ -1224,6 +1229,10 @@ class RemoteTab(QWidget):
                 self.lbl_status.setText('Scrcpy klasörü açılamadı: ' + str(error))
 
     def _launch_scrcpy(self, extra_args=None, context=None):
+        # clicked(bool) sinyali ilk argümana True/False geçirir; liste
+        # verilmediyse varsayılan akıcı profil kullanılır.
+        if not isinstance(extra_args, (list, tuple)):
+            extra_args = scrcpy_profile_args()
         context = context if context is not None else self._capture_device_context()
         if not self._device_context_current(context):
             QMessageBox.information(self, 'Bağlantı Yok', 'Scrcpy ile bağlanmak için önce bir TV cihazına bağlanın.')

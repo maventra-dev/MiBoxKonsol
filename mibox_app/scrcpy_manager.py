@@ -29,6 +29,21 @@ from .config import BASE_DIR, LOG_DIR
 from .workers import BaseWorker
 
 SCRCPY_DEFAULT_VERSION = 'v5.0.1'
+
+# TV kutularının donanım kodlayıcısı tam çözünürlükte 60 FPS'e yetişemez;
+# takılmanın asıl nedeni ağ değil kodlayıcıdır. Varsayılan profil çözünürlüğü,
+# kare hızını ve bit hızını sınırlar; ses TV'de zaten çaldığı için aktarılmaz.
+SCRCPY_PROFILES = {
+    'smooth': ['--max-size=1280', '--max-fps=30', '--video-bit-rate=4M', '--no-audio'],
+    'weak_wifi': ['--max-size=1024', '--max-fps=30', '--video-bit-rate=2M', '--no-audio'],
+    'quality': ['--max-fps=60', '--video-bit-rate=8M'],
+}
+SCRCPY_DEFAULT_PROFILE = 'smooth'
+
+
+def scrcpy_profile_args(profile=SCRCPY_DEFAULT_PROFILE):
+    """Adı verilen Scrcpy profilinin argümanlarının kopyasını döndürür."""
+    return list(SCRCPY_PROFILES[profile])
 SCRCPY_RELEASES = {
     'scrcpy-win64': (
         f'https://github.com/Genymobile/scrcpy/releases/download/{SCRCPY_DEFAULT_VERSION}/scrcpy-win64-{SCRCPY_DEFAULT_VERSION}.zip',
@@ -411,7 +426,7 @@ def launch_scrcpy(
         adb_dir = os.path.dirname(os.path.abspath(adb_path))
         env['PATH'] = adb_dir + os.pathsep + env.get('PATH', '')
 
-    title = window_title or f'MiBox Canlı Ekran - {target} (Scrcpy 60 FPS)'
+    title = window_title or f'MiBox Canlı Ekran - {target} (Scrcpy)'
     cmd = [
         scrcpy_path,
         '-s', target,

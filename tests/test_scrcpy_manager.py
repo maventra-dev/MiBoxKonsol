@@ -805,7 +805,7 @@ def test_launch_scrcpy_temel(scrcpy_dosyalari, monkeypatch, tmp_path):
     assert process.cmd == [
         str(scrcpy_exe), '-s', '192.168.1.5:5555',
         '--window-title',
-        'MiBox Canlı Ekran - 192.168.1.5:5555 (Scrcpy 60 FPS)',
+        'MiBox Canlı Ekran - 192.168.1.5:5555 (Scrcpy)',
         '--stay-awake']
     assert process.kwargs['cwd'] == str(scrcpy_exe.parent)
     env = process.kwargs['env']
@@ -997,3 +997,64 @@ def test_log_scrcpy_output_kapatma_hatasi_yutulur(tmp_path, hata):
     scrcpy_manager._log_scrcpy_output(KapatmaPatlak(hata), str(log_path), [])
 
     assert log_path.exists()
+
+
+def test_scrcpy_varsayilan_profil_akici_ve_sessiz():
+    args = scrcpy_manager.scrcpy_profile_args()
+    assert '--max-size=1280' in args
+    assert '--max-fps=30' in args
+    assert '--video-bit-rate=4M' in args
+    assert '--no-audio' in args
+
+
+def test_scrcpy_profil_kopya_dondurur():
+    args = scrcpy_manager.scrcpy_profile_args('weak_wifi')
+    args.append('--degisti')
+    assert '--degisti' not in scrcpy_manager.SCRCPY_PROFILES['weak_wifi']
+
+
+def test_scrcpy_yuksek_kalite_ses_ve_tam_cozunurluk_korur():
+    args = scrcpy_manager.scrcpy_profile_args('quality')
+    assert '--no-audio' not in args
+    assert not any(a.startswith('--max-size') for a in args)
+
+
+@pytest.mark.parametrize('verilen', [None, False, True])
+def test_remote_tab_scrcpy_dugmesi_varsayilan_profili_kullanir(monkeypatch, verilen):
+    """clicked(bool) sinyalinden gelen True/False da akıcı profile çevrilir."""
+    from mibox_app.ui import remote_tab
+
+    baslatilan = []
+    sahte = SimpleNamespace(
+        _capture_device_context=lambda: ('engine', 'tv', 1),
+        _device_context_current=lambda ctx: True,
+        _scrcpy_download_worker=None,
+        _scrcpy_process=None,
+        _start_scrcpy_process=lambda path, extra_args=None, context=None:
+            baslatilan.append(extra_args),
+    )
+    monkeypatch.setattr(remote_tab, 'find_scrcpy', lambda: 'C:/scrcpy/scrcpy.exe')
+
+    remote_tab.RemoteTab._launch_scrcpy(sahte, verilen)
+
+    assert baslatilan == [scrcpy_manager.scrcpy_profile_args()]
+
+
+def test_remote_tab_scrcpy_acik_profil_korunur(monkeypatch):
+    from mibox_app.ui import remote_tab
+
+    baslatilan = []
+    sahte = SimpleNamespace(
+        _capture_device_context=lambda: ('engine', 'tv', 1),
+        _device_context_current=lambda ctx: True,
+        _scrcpy_download_worker=None,
+        _scrcpy_process=None,
+        _start_scrcpy_process=lambda path, extra_args=None, context=None:
+            baslatilan.append(extra_args),
+    )
+    monkeypatch.setattr(remote_tab, 'find_scrcpy', lambda: 'C:/scrcpy/scrcpy.exe')
+
+    kalite = scrcpy_manager.scrcpy_profile_args('quality')
+    remote_tab.RemoteTab._launch_scrcpy(sahte, kalite)
+
+    assert baslatilan == [kalite]

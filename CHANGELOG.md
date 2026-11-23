@@ -1,5 +1,9 @@
 # Değişiklik günlüğü
 
+## [Yayımlanmadı]
+
+- Scrcpy artık varsayılan olarak akıcı modda açılır (720p, 30 FPS, 4 Mbps, ses aktarılmaz); TV kutusunun kodlayıcısı tam çözünürlükte yetişemediği için oluşan takılma ve gecikme azalır. Sağ tık menüsünde "Zayıf Wi-Fi" (1024p, 2 Mbps) ve "Yüksek Kalite" (tam çözünürlük, 60 FPS, sesli) modları bulunur.
+
 ## [1.5.6] - 2026-11-23
 
 - `df /data` boş çıktı döndürdüğünde cihaz bilgisi ekranı `IndexError` ile kesilmez; depolama alanı `?` olarak gösterilir.
