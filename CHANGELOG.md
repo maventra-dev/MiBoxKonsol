@@ -1,6 +1,6 @@
 # Değişiklik günlüğü
 
-## [Yayımlanmadı]
+## [1.5.5] - 2026-11-23
 
 - Sağlık özeti disk alanını `df -k` ile 1K blokları üzerinden okur; insan-okur (`5.0G`) veya blok sayımı sütunları KB sanılmaz, `df` hata satırları ölçüm olarak gösterilmez; başarılı çıktıdaki uyarılar ölçümü gizlemez.
 - Ekran bilgisinde yenileme hızı `renderFrameRate=60.0` biçiminde de okunur (önceden yalnızca `fps=` tanınıyordu); 0 Hz ölçüm sayılmaz ve okunamayan yenileme hızı okuma hatalarına eklenir.
