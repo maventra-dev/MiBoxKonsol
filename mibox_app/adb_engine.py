@@ -3140,16 +3140,25 @@ class AdbEngine:
         """
         out = {}
         try:
-            df = self.shell(target, 'df', '/data', timeout=timeout).output
+            # '-k' olmadan bazı ROM'lar insan-okur ('5.0G') veya 512 baytlık
+            # blok sütunları basar; bunlar KB değildir. 1K blokları istenir ve
+            # yalnızca sayısal sütunlar ölçüm sayılır.
+            result = self.shell(target, 'df', '-k', '/data', timeout=timeout)
+            df = result.output or ''
+            if result.exit_code != 0 or (result.error or '').strip():
+                raise AdbError((result.error or result.output or 'df başarısız').strip())
             # ör: /dev/block/...  12345678  2345678  9999999  19% /data
-            line = [ln for ln in df.splitlines() if '/data' in ln]
-            line = line[-1] if line else ''
-            parts = line.split()
-            if len(parts) >= 5:
+            # Hata/uyarı satırları da '/data' içerir ('df: /data: No such ...').
+            rows = [ln.split() for ln in df.splitlines()]
+            rows = [parts for parts in rows
+                    if len(parts) >= 6 and parts[-1] == '/data'
+                    and parts[1].isdigit() and parts[3].isdigit()
+                    and re.fullmatch(r'\d+%', parts[4])]
+            if rows:
+                parts = rows[-1]
                 out['disk_total_kb'] = int(parts[1])
                 out['disk_avail_kb'] = int(parts[3])
-                pct = parts[4].rstrip('%')
-                out['disk_pct'] = int(pct) if pct.isdigit() else 0
+                out['disk_pct'] = int(parts[4].rstrip('%'))
         except (AdbError, ValueError, IndexError):
             pass
         try:
@@ -3325,14 +3334,19 @@ class AdbEngine:
 
         try:
             disp_out = (self.shell(target, 'dumpsys', 'display', timeout=timeout).output or '')
-            m = re.search(r'(?:renderFrameRate|fps[=:])\s*([\d\.]+)', disp_out)
+            m = re.search(r'(?:renderFrameRate|fps)\s*[=:]?\s*(\d+(?:\.\d+)?)', disp_out)
             if m:
-                out['fps'] = round(float(m.group(1)), 1)
+                fps = round(float(m.group(1)), 1)
+                # Görünmeyen ekran 0 Hz bildirir; bu bir ölçüm değildir.
+                if fps > 0:
+                    out['fps'] = fps
+                else:
+                    out['read_errors'].append('fps')
             m_name = re.search(r'DeviceProductInfo\{name=([^,\}]+)', disp_out)
             if m_name:
                 out['sink_name'] = m_name.group(1).strip()
-        except AdbError:
-            pass
+        except (AdbError, ValueError):
+            out['read_errors'].append('fps')
 
         fps_val = int(out['fps']) if out['fps'].is_integer() else out['fps']
         screen_parts = ['{}x{} @ {}Hz ({} DPI)'.format(
@@ -3521,9 +3535,6 @@ class AdbEngine:
             cores = len(re.findall(r'(?m)^processor\s*:', cpu_out))
             if cores > 0:
                 out['cores'] = cores
-            m_hw = re.search(r'(?m)^Hardware\s*:\s*(.+)$', cpu_out)
-            if m_hw and out['soc'] == '?':
-                out['soc'] = m_hw.group(1).strip()
         except AdbError:
             pass
 
@@ -3532,8 +3543,13 @@ class AdbEngine:
             therm_out = self.shell(target, 'dumpsys', 'thermalservice', timeout=5).output or ''
             m_t = re.search(r'mValue=([\d\.]+)', therm_out)
             if m_t:
-                deg = round(float(m_t.group(1)), 1)
-                if 10 <= deg <= 120:
+                # 'mValue=4.2.5.' gibi bozuk metin float değildir; sıcaklık
+                # okunamadı sayılır, sysfs yedeğine geçilir.
+                try:
+                    deg = round(float(m_t.group(1)), 1)
+                except ValueError:
+                    deg = None
+                if deg is not None and 10 <= deg <= 120:
                     out['temp'] = '{}°C'.format(deg)
         except Exception:
             pass
@@ -3552,6 +3568,17 @@ class AdbEngine:
                         break
                 except AdbError:
                     pass
+
+        # SoC yedeği en son okunur: sıcaklık sorgusundaki bir hata, çekirdek
+        # sayısı ve Hardware alanından gelen işlemci bilgisini kaybettirmez.
+        if out['soc'] == '?':
+            try:
+                cpu_out = self.shell(target, 'cat', '/proc/cpuinfo', timeout=timeout).output or ''
+                m_hw = re.search(r'(?m)^Hardware\s*:\s*(.+)$', cpu_out)
+                if m_hw:
+                    out['soc'] = m_hw.group(1).strip()
+            except AdbError:
+                pass
         return out
 
     def usb_storages(self, target, timeout=15):

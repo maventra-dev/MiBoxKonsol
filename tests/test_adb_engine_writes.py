@@ -866,7 +866,7 @@ def test_display_details_okunamayan_alanlar():
 
     engine = ShellEngine(handler)
     d = engine.display_details('tv-1')
-    assert d['read_errors'] == ['size', 'density']
+    assert d['read_errors'] == ['size', 'density', 'fps']
     assert d['width'] == 1920
     assert d['density'] == 320
     assert d['overscan'] is None

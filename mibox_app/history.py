@@ -99,16 +99,20 @@ def read_all(limit=500):
     except OSError:
         return []
     out = []
-    for line in reversed(lines[-limit:]):
+    # Limit geçerli kayıt sayısını sınırlar: sondaki bozuk/boş satırlar
+    # geçerli geçmiş kayıtlarını listeden düşürmemelidir.
+    for line in reversed(lines):
         line = line.strip()
         if not line:
             continue
         try:
             rec = json.loads(line)
-            if isinstance(rec, dict) and rec.get('package'):
-                out.append(rec)
         except ValueError:
             continue
+        if isinstance(rec, dict) and rec.get('package'):
+            out.append(rec)
+            if limit is not None and len(out) >= limit:
+                break
     return out
 
 

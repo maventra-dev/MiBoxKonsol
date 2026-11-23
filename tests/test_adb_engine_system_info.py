@@ -812,3 +812,41 @@ def test_device_info_full_hatalar_soru_isareti():
     assert info['wifi_ssid'] == '?'
     assert info['wifi_ip'] == '?'
     assert info['screen'] == '?'
+
+
+def test_cpu_info_bozuk_termal_deger_soc_bilgisini_kaybettirmez():
+    """'mValue=4.2.5.' float değildir; SoC/çekirdek okuması yarıda kalmamalı."""
+    def handler(call):
+        if call[:1] == ['getprop']:
+            return AdbResult(0, '', '')
+        if call[:2] == ['cat', '/proc/cpuinfo']:
+            return AdbResult(0, 'processor : 0\nHardware : Amlogic S905X\n', '')
+        if call[:2] == ['dumpsys', 'thermalservice']:
+            return AdbResult(0, 'Temperature{mValue=4.2.5., mType=0}\n', '')
+        if call[:1] == ['cat']:
+            raise AdbError('termal yok')
+        return None
+
+    eng = ShellEngine(handler)
+    out = eng.cpu_info('S')
+    assert out['cores'] == 1
+    assert out['soc'] == 'Amlogic S905X'
+    assert out['temp'] == '?'
+
+
+def test_cpu_info_termal_istisnasi_soc_bilgisini_kaybettirmez():
+    def handler(call):
+        if call[:1] == ['getprop']:
+            return AdbResult(0, '', '')
+        if call[:2] == ['cat', '/proc/cpuinfo']:
+            return AdbResult(0, 'processor : 0\nHardware : Amlogic S905X\n', '')
+        if call[:2] == ['dumpsys', 'thermalservice']:
+            raise RuntimeError('termal okuma patladi')
+        if call[:1] == ['cat']:
+            raise AdbError('termal yok')
+        return None
+
+    eng = ShellEngine(handler)
+    out = eng.cpu_info('S')
+    assert out['soc'] == 'Amlogic S905X'
+    assert out['temp'] == '?'

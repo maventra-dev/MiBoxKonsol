@@ -196,3 +196,14 @@ def test_append_many_kullanici_kimligini_tasir(base):
 def test_append_many_yazilamazsa_false(tmp_path, monkeypatch):
     monkeypatch.setattr(config, 'BASE_DIR', str(tmp_path / 'yok'))
     assert history.append_many('tv-1', 'disable', [('com.a', True, 'tamam')]) is False
+
+
+def test_read_all_limit_bozuk_satirlardan_etkilenmez(base):
+    yol = base / 'mibox-islem-gecmisi.jsonl'
+    gecerli = ('{{"ts":"t","target":"tv","action":"disable","package":"com.{}",'
+               '"method":"","ok":true,"user_id":0}}\n')
+    yol.write_text(
+        gecerli.format(0) + gecerli.format(1) + 'bozuk\n' * 5 + gecerli.format(2),
+        encoding='utf-8')
+    kayitlar = history.read_all(limit=2)
+    assert [k['package'] for k in kayitlar] == ['com.2', 'com.1']

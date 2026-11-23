@@ -100,7 +100,7 @@ def test_display_details_okuma_hatalari_kaydedilir():
 
     eng = ShellEngine(handler)
     out = eng.display_details('S')
-    assert out['read_errors'] == ['size', 'density']
+    assert out['read_errors'] == ['size', 'density', 'fps']
     assert out['width'] == 1920
     assert out['density'] == 320
     assert out['fps'] == 60.0
@@ -239,3 +239,21 @@ def test_reset_display_overscan_basarili_ve_hata():
     with pytest.raises(AdbError) as exc:
         eng2.reset_display_overscan('S')
     assert 'Overscan sıfırlanamadı' in str(exc.value)
+
+
+def test_display_details_bozuk_fps_ortam_bilgisini_kaybettirmez():
+    eng = ShellEngine(_ekran_handler(
+        display_okuma='renderFrameRate=60..0\n'
+                      'DeviceProductInfo{name=Mi TV, extra}\n'))
+    out = eng.display_details('S')
+    assert out['fps'] == 60.0
+    assert out['sink_name'] == 'Mi TV'
+    assert out['read_errors'] == []
+    assert '60Hz' in out['screen_str']
+
+
+def test_display_details_gorunmeyen_yenileme_hizi_olcum_sayilmaz():
+    eng = ShellEngine(_ekran_handler(display_okuma='renderFrameRate=0.0\n'))
+    out = eng.display_details('S')
+    assert out['fps'] == 60.0
+    assert 'fps' in out['read_errors']

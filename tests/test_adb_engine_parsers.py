@@ -1150,7 +1150,7 @@ def test_app_permissions_bos():
 
 def test_health_ozet():
     def handler(call):
-        if call[:2] == ['df', '/data']:
+        if call == ['df', '-k', '/data']:
             return AdbResult(0, '/dev/block/x 1000 200 700 30% /data\n', '')
         if call[:2] == ['cat', '/proc/meminfo']:
             return AdbResult(
@@ -1173,7 +1173,7 @@ def test_health_ozet():
 
 def test_health_kismi_ve_bos():
     def handler(call):
-        if call[:2] == ['df', '/data']:
+        if call == ['df', '-k', '/data']:
             return AdbResult(0, '/dev/x 100 10 90 10% /data\n', '')
         return AdbResult(1, '', '')
 
@@ -1197,7 +1197,7 @@ def test_health_df_istisnasi():
 
 def test_health_meminfo_istisnasi():
     def handler(call):
-        if call[:2] == ['df', '/data']:
+        if call == ['df', '-k', '/data']:
             return AdbResult(0, '/dev/x 100 10 90 10% /data\n', '')
         raise AdbError('meminfo kopuk')
 
@@ -1307,3 +1307,38 @@ def test_animator_scales_istisnasi_soru():
         'window_animation_scale': '?',
         'transition_animation_scale': '?',
         'animator_duration_scale': '?'}
+
+
+def test_health_df_hatali_satir_disk_verisi_sayilmaz():
+    """'df: /data: No such file or directory' satırı ölçüm değildir."""
+    def handler(call):
+        if call[:2] == ['df', '/data']:
+            return AdbResult(
+                1, 'df: /data: No such file or directory\n', '')
+        return AdbResult(1, '', '')
+
+    engine = ShellEngine(handler)
+    assert engine.health('tv-1') == {}
+
+
+def test_health_df_1k_blok_sayilari_kullanilir():
+    """Blok sayımı sütunları KB değildir; -h ile 1K blokları istenir."""
+    def handler(call):
+        if call == ['df', '-k', '/data']:
+            return AdbResult(
+                0,
+                'Filesystem     1K-blocks    Used Available Use% Mounted on\n'
+                '/dev/block/dm-5  5242880 4194304   1048576  80% /data\n', '')
+        if call[:2] == ['df', '/data']:
+            return AdbResult(
+                0,
+                'Filesystem      Size  Used Avail Use% Mounted on\n'
+                '/dev/block/dm-5 5.0G  4.0G  1.0G  80% /data\n', '')
+        return AdbResult(1, '', '')
+
+    engine = ShellEngine(handler)
+    out = engine.health('tv-1')
+    assert out['disk_total_kb'] == 5242880
+    assert out['disk_avail_kb'] == 1048576
+    assert out['disk_pct'] == 80
+    assert ['df', '-k', '/data'] in engine.calls
