@@ -1342,3 +1342,20 @@ def test_health_df_1k_blok_sayilari_kullanilir():
     assert out['disk_avail_kb'] == 1048576
     assert out['disk_pct'] == 80
     assert ['df', '-k', '/data'] in engine.calls
+
+
+def test_health_df_stderr_uyarisi_olcumu_dusurmez():
+    """Başarılı df çıktısındaki stderr uyarısı disk verisini gizlememeli."""
+    def handler(call):
+        if call == ['df', '-k', '/data']:
+            return AdbResult(
+                0,
+                'Filesystem     1K-blocks    Used Available Use% Mounted on\n'
+                '/dev/block/dm-5  5242880 4194304   1048576  80% /data\n',
+                'df: /mnt/runtime: Permission denied\n')
+        return AdbResult(1, '', '')
+
+    engine = ShellEngine(handler)
+    out = engine.health('tv-1')
+    assert out['disk_total_kb'] == 5242880
+    assert out['disk_pct'] == 80

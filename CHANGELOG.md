@@ -2,8 +2,7 @@
 
 ## [Yayımlanmadı]
 
-- Sağlık özeti disk alanını `df -k` ile 1K blokları üzerinden okur; insan-okur (`5.0G`) veya blok sayımı sütunları KB sanılmaz, `df` hata satırları ölçüm olarak gösterilmez.
-- Donanım bilgisinde bozuk sıcaklık değeri (`mValue=4.2.5.`) veya sıcaklık sorgusu hatası artık işlemci modeli/çekirdek sayısı okumasını yarıda kesmez; sıcaklık sysfs yedeğinden okunur.
+- Sağlık özeti disk alanını `df -k` ile 1K blokları üzerinden okur; insan-okur (`5.0G`) veya blok sayımı sütunları KB sanılmaz, `df` hata satırları ölçüm olarak gösterilmez; başarılı çıktıdaki uyarılar ölçümü gizlemez.
 - Ekran bilgisinde yenileme hızı `renderFrameRate=60.0` biçiminde de okunur (önceden yalnızca `fps=` tanınıyordu); 0 Hz ölçüm sayılmaz ve okunamayan yenileme hızı okuma hatalarına eklenir.
 - İşlem geçmişi listesinde sınır, geçerli kayıt sayısına uygulanır; dosya sonundaki bozuk satırlar geçerli kayıtları listeden düşürmez.
 

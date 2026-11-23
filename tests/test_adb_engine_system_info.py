@@ -850,3 +850,20 @@ def test_cpu_info_termal_istisnasi_soc_bilgisini_kaybettirmez():
     out = eng.cpu_info('S')
     assert out['soc'] == 'Amlogic S905X'
     assert out['temp'] == '?'
+
+
+def test_cpu_info_cpuinfo_tek_kez_okunur():
+    """Hardware yedeği için /proc/cpuinfo ikinci kez sorgulanmamalı."""
+    def handler(call):
+        if call[:1] == ['getprop']:
+            return AdbResult(0, '', '')
+        if call[:2] == ['cat', '/proc/cpuinfo']:
+            return AdbResult(0, 'processor : 0\nHardware : Amlogic S905X\n', '')
+        if call[:2] == ['dumpsys', 'thermalservice']:
+            return AdbResult(0, 'Temperature{mValue=45.0, mType=0}\n', '')
+        return None
+
+    eng = ShellEngine(handler)
+    out = eng.cpu_info('S')
+    assert out['soc'] == 'Amlogic S905X'
+    assert eng.calls.count(['cat', '/proc/cpuinfo']) == 1

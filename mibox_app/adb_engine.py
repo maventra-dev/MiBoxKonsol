@@ -3145,7 +3145,9 @@ class AdbEngine:
             # yalnızca sayısal sütunlar ölçüm sayılır.
             result = self.shell(target, 'df', '-k', '/data', timeout=timeout)
             df = result.output or ''
-            if result.exit_code != 0 or (result.error or '').strip():
+            # Başarılı çıktıdaki stderr uyarıları ölçümü geçersiz kılmaz;
+            # yalnızca aşağıdaki sayısal /data satırı ölçüm sayılır.
+            if result.exit_code != 0:
                 raise AdbError((result.error or result.output or 'df başarısız').strip())
             # ör: /dev/block/...  12345678  2345678  9999999  19% /data
             # Hata/uyarı satırları da '/data' içerir ('df: /data: No such ...').
@@ -3535,6 +3537,9 @@ class AdbEngine:
             cores = len(re.findall(r'(?m)^processor\s*:', cpu_out))
             if cores > 0:
                 out['cores'] = cores
+            m_hw = re.search(r'(?m)^Hardware\s*:\s*(.+)$', cpu_out)
+            if m_hw and out['soc'] == '?':
+                out['soc'] = m_hw.group(1).strip()
         except AdbError:
             pass
 
@@ -3568,17 +3573,6 @@ class AdbEngine:
                         break
                 except AdbError:
                     pass
-
-        # SoC yedeği en son okunur: sıcaklık sorgusundaki bir hata, çekirdek
-        # sayısı ve Hardware alanından gelen işlemci bilgisini kaybettirmez.
-        if out['soc'] == '?':
-            try:
-                cpu_out = self.shell(target, 'cat', '/proc/cpuinfo', timeout=timeout).output or ''
-                m_hw = re.search(r'(?m)^Hardware\s*:\s*(.+)$', cpu_out)
-                if m_hw:
-                    out['soc'] = m_hw.group(1).strip()
-            except AdbError:
-                pass
         return out
 
     def usb_storages(self, target, timeout=15):
