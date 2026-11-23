@@ -681,7 +681,7 @@ def test_logbus_hata_yutma(monkeypatch):
 
 def test_pencere_kurulumu(pencere):
     win, core, _tmp = pencere
-    assert win.windowTitle() == 'MiBox Konsol v1.5.6'
+    assert win.windowTitle() == 'MiBox Konsol v1.5.7'
     assert win.minimumWidth() == 900 and win.minimumHeight() == 600
     assert win.navigation.count() == 12
     assert win.tabs.count() == 12
@@ -719,7 +719,7 @@ def test_pencere_kurulumu(pencere):
     assert win.btn_stop.isEnabled() is False
     # açılış satırı tampona yazıldı
     win._flush_logs()
-    assert 'MiBox Konsol v1.5.6 başlatıldı.' in win.txt_log.toPlainText()
+    assert 'MiBox Konsol v1.5.7 başlatıldı.' in win.txt_log.toPlainText()
 
 
 # --- gezinme ---
@@ -2454,10 +2454,10 @@ def test_tepsi_simgesi(qtbot, monkeypatch, tmp_path):
                         staticmethod(lambda: True))
     win._setup_tray_icon()
     assert hasattr(win, 'tray_icon')
-    assert win.tray_icon.toolTip() == 'MiBox Konsol v1.5.6'
+    assert win.tray_icon.toolTip() == 'MiBox Konsol v1.5.7'
     menu = win.tray_icon.contextMenu()
     eylemler = [a for a in menu.actions() if a.text()]
-    assert eylemler[0].text() == '📺 MiBox Konsol v1.5.6'
+    assert eylemler[0].text() == '📺 MiBox Konsol v1.5.7'
     assert eylemler[0].isEnabled() is False
     assert eylemler[-1].text() == 'Çıkış'
     for eylem in eylemler:
